@@ -1,4 +1,4 @@
-import { db } from './firebase-config.js';
+import { db, auth } from './firebase-config.js';
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 // RAED LAB - Modern Patient Registration
 
@@ -269,7 +269,15 @@ function updateSelectedTests() {
 }
 
 // ============ SAVE PATIENT ============
+// ============ SAVE PATIENT (Cloud Isolation Version) ============
 async function savePatient() {
+    // التأكد من أن المستخدم مسجل دخول أولاً
+    if (!auth.currentUser) {
+        showToast('يجب تسجيل الدخول أولاً للقيام بهذه العملية', 'error');
+        setTimeout(() => window.location.href = 'login.html', 1500);
+        return;
+    }
+
     if (!validateForm()) {
         showToast('يرجى ملء جميع الحقول المطلوبة بشكل صحيح', 'error');
         const firstInvalid = patientForm.querySelector('.invalid');
@@ -288,12 +296,19 @@ async function savePatient() {
         age: formData.get('patientAge'),
         gender: formData.get('patientGender'),
         phone: formData.get('patientPhone'),
-        branch: formData.get('branchName'),
+        branch: formData.get('branchName'), // الاسم النصي للفرع (للعرض)
+        
+        // --- السطر السحري لعزل البيانات ---
+        branchId: auth.currentUser.uid, 
+        branchEmail: auth.currentUser.email,
+        // ---------------------------------
+
         date: formData.get('registrationDate'),
         notes: formData.get('patientNotes'),
         tests: selectedTests.map(test => ({
             id: test.id,
             name: test.name,
+            shortName: test.shortName, // أضفنا هذا للتأكد من ظهوره في الـ PDF
             price: test.price
         })),
         totalTests: selectedTests.length,
@@ -302,23 +317,23 @@ async function savePatient() {
     };
 
     try {
-        // تغيير جذري: الحفظ في Firebase بدلاً من localStorage
-        savePatientBtn.disabled = true; // تعطيل الزر مؤقتاً لمنع التكرار
-        savePatientBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+        savePatientBtn.disabled = true;
+        savePatientBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ في السحابة...';
         
+        // حفظ البيانات في مجموعة "patients"
         await addDoc(collection(db, "patients"), patientData);
         
-        showToast(`تم حفظ بيانات "${patientData.name}" بنجاح في السحابة!`, 'success');
+        showToast(`تم الحفظ بنجاح! المريض مربوط بحساب: ${auth.currentUser.email}`, 'success');
         resetFormSilent();
         
         setTimeout(() => {
-            if (confirm('هل تريد الانتقال إلى قائمة المرضى؟')) {
+            if (confirm('تم الحفظ. هل تريد الانتقال إلى قائمة مرضى فرعك؟')) {
                 window.location.href = 'patients-list.html';
             }
         }, 500);
     } catch (error) {
-        console.error("Error adding document: ", error);
-        showToast('حدث خطأ أثناء الاتصال بالسيرفر، يرجى المحاولة لاحقاً', 'error');
+        console.error("Error: ", error);
+        showToast('فشل في الحفظ، تأكد من اتصال الإنترنت', 'error');
     } finally {
         savePatientBtn.disabled = false;
         savePatientBtn.innerHTML = '<i class="fas fa-save"></i> حفظ بيانات المريض';
