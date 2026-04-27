@@ -58,34 +58,66 @@ async function loadPatients(uid, isAdmin) {
 
 // ============= 3. Core Functions =============
 
+// ============= تحديث عرض الجدول ليحتوي على بطاقات التحاليل =============
+
 function renderPatientsTable() {
     recordsCount.textContent = filteredPatients.length;
     patientsTableBody.innerHTML = '';
     
     filteredPatients.forEach((p, i) => {
         const tr = document.createElement('tr');
+        
+        // 1. تحويل مصفوفة التحاليل إلى بطاقات HTML صغيرة
+        const testsBadges = (p.tests || []).map(t => `
+            <span style="
+                display: inline-block;
+                background: #F0FDFA;
+                color: #0D9488;
+                padding: 2px 8px;
+                border-radius: 6px;
+                margin: 2px;
+                font-size: 0.75rem;
+                border: 1px solid #CCFBF1;
+                font-weight: bold;
+                white-space: nowrap;
+            ">
+                ${t.shortName || t.name}
+            </span>
+        `).join('');
+
         tr.innerHTML = `
             <td>${i + 1}</td>
-            <td style="font-weight:bold;">${p.name}</td>
+            <td style="font-weight:bold; min-width:150px;">${p.name}</td>
             <td>${p.age || '-'} سنة</td>
             <td>${p.gender || '-'}</td>
-            <td>${p.phone || '-'}</td>
+            
+            <td style="max-width: 300px;">
+                <div style="display: flex; flex-wrap: wrap; gap: 2px;">
+                    ${testsBadges || '<span style="color:#999">لا توجد تحاليل</span>'}
+                </div>
+            </td>
+
             <td>
                 <span class="branch-tag" style="background:#E0F2F1; color:#0D9488; padding:4px 8px; border-radius:4px; font-size:0.8rem; font-weight:bold;">
                     ${p.branch || 'غير محدد'} 
                 </span>
             </td>
+            
             <td>${p.date || '-'}</td>
-            <td class="price-text" style="font-weight:bold; color:#0D9488;">
+            
+            <td class="price-text" style="font-weight:bold; color:#0D9488; white-space:nowrap;">
                 ${(p.totalAmount || 0).toLocaleString('ar-DZ')} دج
             </td>
+            
             <td>
-                <button class="action-btn delete" onclick="deletePatient('${p.firebaseId}')"><i class="fas fa-trash"></i></button>
+                <button class="action-btn delete" onclick="deletePatient('${p.firebaseId}')" style="color: #EF4444; background: none; border: none; cursor: pointer;">
+                    <i class="fas fa-trash"></i>
+                </button>
             </td>
         `;
         patientsTableBody.appendChild(tr);
     });
-}
+}}
 
 function filterPatients() {
     const searchTerm = (patientSearchInput.value || '').toLowerCase().trim();
