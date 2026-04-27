@@ -22,7 +22,7 @@ const exportPDFBtn = document.getElementById('exportPDFBtn');
 onAuthStateChanged(auth, (user) => {
     if (user) {
         // ضع بريدك الإلكتروني هنا ليكون هو حساب المدير
-        const adminEmail = "admin@raedlab.com"; 
+        const adminEmail = "contact.raedlab@gmail.com"; 
         const isAdmin = (user.email === adminEmail);
         
         loadPatients(user.uid, isAdmin);
