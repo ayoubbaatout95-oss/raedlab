@@ -1,4 +1,12 @@
 // ============= Export PDF (Updated for Firebase & Modules) =============
+import { db } from './firebase-config.js';
+import { collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+
+// أضف هذه هنا فوراً لضمان عدم حدوث ReferenceError
+window.filterPatients = filterPatients;
+window.resetFilters = resetFilters;
+window.exportToPDF = exportToPDF;
+window.exportToExcel = exportToExcel;
 function exportToPDF() {
     if (filteredPatients.length === 0) { 
         showToast('لا توجد بيانات للتصدير', 'warning'); 
