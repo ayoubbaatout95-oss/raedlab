@@ -10,7 +10,6 @@
 </head>
 <body class="portal-body">
 
-    <!-- ============ TOP BAR ============ -->
     <header class="portal-topbar">
         <div class="portal-topbar-brand">
             <button class="portal-mobile-toggle" id="portalMobileToggle" aria-label="القائمة">
@@ -32,19 +31,18 @@
                 <i class="fas fa-bell"></i>
                 <span class="dot"></span>
             </button>
-            <button class="portal-icon-btn" title="الإعدادات">
-                <i class="fas fa-cog"></i>
+            <button class="portal-icon-btn" id="logoutBtn" title="تسجيل الخروج">
+                <i class="fas fa-sign-out-alt"></i>
             </button>
-            <div class="portal-avatar" title="الموظف">RL</div>
+            <div class="portal-avatar" id="userInitial">RL</div>
         </div>
     </header>
 
-    <!-- ============ SIDEBAR ============ -->
     <div class="portal-sidebar-overlay" id="portalSidebarOverlay"></div>
     <aside class="portal-sidebar" id="portalSidebar">
         <div class="portal-sidebar-header">
             <h2>RAED LAB</h2>
-            <p>بوابة العاملين</p>
+            <p id="currentBranchName">جاري التحميل...</p>
         </div>
         <nav class="portal-sidebar-nav">
             <a href="index.html" class="portal-nav-item active">
@@ -62,46 +60,21 @@
             <a href="about.html" class="portal-nav-item">
                 <i class="fas fa-info-circle"></i> <span>عن المخبر</span>
             </a>
-            <a href="contact.html" class="portal-nav-item">
-                <i class="fas fa-headset"></i> <span>الدعم والاتصال</span>
-            </a>
         </nav>
-        <div class="portal-sidebar-footer">
-            <a href="faq.html" class="portal-nav-item">
-                <i class="fas fa-question-circle"></i> <span>الأسئلة الشائعة</span>
-            </a>
-        </div>
     </aside>
 
-    <!-- ============ MAIN CONTENT ============ -->
     <main class="portal-main">
         <div class="portal-main-inner">
 
-            <!-- Welcome -->
             <div class="portal-welcome">
-                <h1> أهلاً بك  👋</h1>
-                <p>
-                    <span class="status-pill"> </span>
-                    اختر الوحدة المطلوبة  أدناه لبدء العمل اليومي.
-                </p>
+                <h1>أهلاً بك 👋</h1>
+                <p>نظام الإدارة السحابي لمختبر رائد لاب - ابدأ عملك اليومي من هنا.</p>
             </div>
 
-            <!-- Action Cards (Bento) -->
             <div class="portal-action-grid">
-                <a href="tests-catalog.html" class="portal-action-card">
-                    <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-flask"></i></div>
-                        <i class="fas fa-arrow-left card-arrow"></i>
-                    </div>
-                    <div>
-                        <h3>قائمة التحاليل</h3>
-                        <p>تصفح أكثر من 260 تحليلاً مع البحث الذكي والتصنيف بالأنبوب.</p>
-                    </div>
-                </a>
-
                 <a href="register-patient.html" class="portal-action-card">
                     <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-user-plus"></i></div>
+                        <div class="card-icon" style="background:#0D9488; color:white;"><i class="fas fa-user-plus"></i></div>
                         <i class="fas fa-arrow-left card-arrow"></i>
                     </div>
                     <div>
@@ -112,92 +85,49 @@
 
                 <a href="patients-list.html" class="portal-action-card">
                     <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-users"></i></div>
+                        <div class="card-icon" style="background:#3B82F6; color:white;"><i class="fas fa-users"></i></div>
                         <i class="fas fa-arrow-left card-arrow"></i>
                     </div>
                     <div>
                         <h3>قائمة المرضى</h3>
-                        <p>عرض السجلات، تصفية، تصدير Excel/PDF .</p>
-                    </div>
-                </a>
-
-                <a href="patients-list.html#stats" class="portal-action-card">
-                    <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-                        <i class="fas fa-arrow-left card-arrow"></i>
-                    </div>
-                    <div>
-                        <h3>الإحصائيات</h3>
-                        <p>متابعة الأداء اليومي للفروع وعدد التحاليل والإيرادات.</p>
-                    </div>
-                </a>
-
-                <a href="contact.html" class="portal-action-card">
-                    <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-headset"></i></div>
-                        <i class="fas fa-arrow-left card-arrow"></i>
-                    </div>
-                    <div>
-                        <h3>الدعم الفني</h3>
-                        <p>التواصل المباشر مع الإدارة أو الفروع الأخرى.</p>
-                    </div>
-                </a>
-
-                <a href="faq.html" class="portal-action-card">
-                    <div class="card-top">
-                        <div class="card-icon"><i class="fas fa-book-open"></i></div>
-                        <i class="fas fa-arrow-left card-arrow"></i>
-                    </div>
-                    <div>
-                        <h3>الإجراءات والأسئلة</h3>
-                        <p>دليل سريع للإجراءات اليومية وحل المشاكل الشائعة.</p>
+                        <p>عرض السجلات السحابية، تصفية البيانات، وتصدير التقارير.</p>
                     </div>
                 </a>
             </div>
 
-            <!-- Live Lab Status & Recent Activity -->
             <div class="portal-kpi-section">
-                <div>
-                    <h2 class="portal-section-title">الحالة المباشرة للمختبر</h2>
+                <div class="kpi-group">
+                    <h2 class="portal-section-title">إحصائيات اليوم</h2>
                     <div class="portal-kpi-grid">
                         <div class="portal-kpi-card">
                             <div class="portal-kpi-label">مرضى اليوم</div>
                             <div class="portal-kpi-value" id="kpiTodayPatients">0</div>
-                            <div class="portal-kpi-progress"><div class="portal-kpi-progress-bar" id="kpiTodayPatientsBar" style="width:0%"></div></div>
-                        </div>
-                        <div class="portal-kpi-card primary">
-                            <div class="portal-kpi-label">تحاليل اليوم</div>
-                            <div class="portal-kpi-value" id="kpiTodayTests">0</div>
-                            <div class="portal-kpi-progress"><div class="portal-kpi-progress-bar" id="kpiTodayTestsBar" style="width:0%"></div></div>
+                            <div class="portal-kpi-progress"><div class="portal-kpi-progress-bar" id="kpiTodayPatientsBar"></div></div>
                         </div>
                         <div class="portal-kpi-card">
                             <div class="portal-kpi-label">إيرادات اليوم</div>
-                            <div class="portal-kpi-value" id="kpiTodayRevenue">0</div>
-                            <div class="portal-kpi-progress"><div class="portal-kpi-progress-bar" id="kpiTodayRevenueBar" style="width:0%"></div></div>
+                            <div class="portal-kpi-value" id="kpiTodayRevenue">0 دج</div>
+                            <div class="portal-kpi-progress"><div class="portal-kpi-progress-bar" id="kpiTodayRevenueBar"></div></div>
                         </div>
                     </div>
 
-                    <h2 class="portal-section-title" style="margin-top:24px;">الإجمالي الكلي</h2>
+                    <h2 class="portal-section-title" style="margin-top:24px;">الإجمالي العام</h2>
                     <div class="portal-kpi-grid">
-                        <div class="portal-kpi-card">
+                        <div class="portal-kpi-card primary">
                             <div class="portal-kpi-label">إجمالي المرضى</div>
                             <div class="portal-kpi-value" id="kpiTotalPatients">0</div>
                         </div>
-                        <div class="portal-kpi-card">
-                            <div class="portal-kpi-label">إجمالي التحاليل</div>
-                            <div class="portal-kpi-value" id="kpiTotalTests">0</div>
-                        </div>
                         <div class="portal-kpi-card primary">
                             <div class="portal-kpi-label">إجمالي الإيرادات</div>
-                            <div class="portal-kpi-value" id="kpiTotalRevenue">0</div>
+                            <div class="portal-kpi-value" id="kpiTotalRevenue">0 دج</div>
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <h2 class="portal-section-title">آخر السجلات</h2>
+                <div class="recent-group">
+                    <h2 class="portal-section-title">آخر السجلات المسجلة</h2>
                     <div class="portal-recent-panel" id="recentPanel">
-                        <div class="portal-recent-empty">لا توجد سجلات بعد</div>
+                        <div style="padding:20px; text-align:center; color:#999;">جاري تحميل آخر النشاطات...</div>
                     </div>
                 </div>
             </div>
@@ -205,12 +135,10 @@
         </div>
     </main>
 
-    <!-- Toast container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Scripts -->
     <script src="data.js"></script>
+    <script type="module" src="dashboard-logic.js"></script>
     <script src="portal-shared.js"></script>
-    <script src="dashboard.js"></script>
 </body>
 </html>
