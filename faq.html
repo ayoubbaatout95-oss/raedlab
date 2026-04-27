@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="الأسئلة الشائعة - بوابة العاملين RAED LAB">
+    <title>الأسئلة الشائعة - RAED LAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="portal-body">
+
+    <header class="portal-topbar">
+        <div class="portal-topbar-brand">
+            <button class="portal-mobile-toggle" id="portalMobileToggle"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="portal-topbar-logo"><i class="fas fa-microscope"></i><span>RAED LAB</span></a>
+        </div>
+        <div class="portal-topbar-search autocomplete-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="بحث سريع: تحليل، مريض، رمز...">
+        </div>
+        <div class="portal-topbar-actions">
+            <button class="portal-icon-btn"><i class="fas fa-bell"></i><span class="dot"></span></button>
+            <button class="portal-icon-btn"><i class="fas fa-cog"></i></button>
+            <div class="portal-avatar">RL</div>
+        </div>
+    </header>
+
+    <div class="portal-sidebar-overlay" id="portalSidebarOverlay"></div>
+    <aside class="portal-sidebar" id="portalSidebar">
+        <div class="portal-sidebar-header"><h2>RAED LAB</h2><p>بوابة العاملين</p></div>
+        <nav class="portal-sidebar-nav">
+            <a href="index.html" class="portal-nav-item"><i class="fas fa-th-large"></i> <span>اللوحة الرئيسية</span></a>
+            <a href="tests-catalog.html" class="portal-nav-item"><i class="fas fa-flask"></i> <span>قائمة التحاليل</span></a>
+            <a href="register-patient.html" class="portal-nav-item"><i class="fas fa-user-plus"></i> <span>تسجيل مريض</span></a>
+            <a href="patients-list.html" class="portal-nav-item"><i class="fas fa-users"></i> <span>قائمة المرضى</span></a>
+            <a href="about.html" class="portal-nav-item"><i class="fas fa-info-circle"></i> <span>عن المخبر</span></a>
+            <a href="contact.html" class="portal-nav-item"><i class="fas fa-headset"></i> <span>الدعم والاتصال</span></a>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="faq.html" class="portal-nav-item active"><i class="fas fa-question-circle"></i> <span>الأسئلة الشائعة</span></a>
+        </div>
+    </aside>
+
+    <main class="portal-main">
+        <div class="portal-main-inner">
+            <div class="portal-page-header">
+                <div>
+                    <h2><i class="fas fa-question-circle"></i> الأسئلة الشائعة</h2>
+                    <p>دليل مرجعي للموظفين حول الإجراءات اليومية والاستفسارات المتكررة.</p>
+                </div>
+            </div>
+
+            <section class="faq-section" style="padding:0;background:transparent;">
+                <div class="container" style="padding:0;max-width:none;">
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question"><span>كيف أسجل مريضاً جديداً بسرعة؟</span><i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer">من اللوحة الرئيسية، اضغط على بطاقة "تسجيل مريض جديد"، أو من كتالوج التحاليل بعد اختيار التحاليل اضغط على زر "تسجيل مريض بهذه التحاليل" — سيتم تحميل التحاليل تلقائياً في نموذج التسجيل.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>كيف أستخدم البحث الذكي (الإكمال التلقائي)؟</span><i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer">في أي خانة بحث، ابدأ الكتابة وستظهر اقتراحات فورية. استخدم الأسهم ↑↓ للتنقل، Enter للتأكيد، Escape للإغلاق. يعمل البحث على اسم المريض، رقم الهاتف، اسم التحليل، الاختصار، أو الفئة.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>هل يجب الصيام قبل إجراء التحاليل؟</span><i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer">يعتمد ذلك على نوع التحليل. بعض التحاليل مثل السكر والدهون تتطلب صياماً لمدة 8-12 ساعة. يمكنك الاطلاع على تفاصيل كل تحليل من كتالوج التحاليل بالضغط على زر المعلومات.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>كم تستغرق نتائج التحاليل؟</span><i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer">تختلف المدة حسب نوع التحليل. التحاليل الروتينية تظهر في نفس اليوم، بينما التحاليل المتخصصة قد تستغرق 2-5 أيام. تحاليل PCR قد تحتاج 5-10 أيام.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>كيف أصدر بيانات المرضى إلى Excel أو PDF؟</span><i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer">من صفحة "قائمة المرضى"، استخدم الفلاتر لتحديد السجلات المطلوبة، ثم اضغط على زر "Excel" أو "PDF" في الزاوية. سيتم تصدير ملف يشمل الأسماء، التحاليل المختصرة والكاملة، والمبالغ.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>هل البيانات تُحفظ على السيرفر؟</span><i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer">حالياً البيانات تُحفظ محلياً في متصفح كل فرع (localStorage). يمكن لاحقاً ربط النظام بقاعدة بيانات مركزية لمزامنة جميع الفروع تلقائياً.</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span>كيف أحذف مريضاً عن طريق الخطأ؟</span><i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer">من قائمة المرضى، اضغط على أيقونة "السلة المحذوفات" بجانب السجل. سيظهر تأكيد قبل الحذف النهائي. يُنصح بتصدير نسخة احتياطية دورياً عبر زر Excel.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/portal-shared.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.parentElement;
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

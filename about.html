@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="من نحن - مخبر RAED LAB للتحاليل الطبية">
+    <title>عن المخبر - RAED LAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="portal-body">
+
+    <header class="portal-topbar">
+        <div class="portal-topbar-brand">
+            <button class="portal-mobile-toggle" id="portalMobileToggle"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="portal-topbar-logo"><i class="fas fa-microscope"></i><span>RAED LAB</span></a>
+        </div>
+        <div class="portal-topbar-search autocomplete-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="بحث سريع: تحليل، مريض، رمز...">
+        </div>
+        <div class="portal-topbar-actions">
+            <button class="portal-icon-btn"><i class="fas fa-bell"></i><span class="dot"></span></button>
+            <button class="portal-icon-btn"><i class="fas fa-cog"></i></button>
+            <div class="portal-avatar">RL</div>
+        </div>
+    </header>
+
+    <div class="portal-sidebar-overlay" id="portalSidebarOverlay"></div>
+    <aside class="portal-sidebar" id="portalSidebar">
+        <div class="portal-sidebar-header"><h2>RAED LAB</h2><p>بوابة العاملين</p></div>
+        <nav class="portal-sidebar-nav">
+            <a href="index.html" class="portal-nav-item"><i class="fas fa-th-large"></i> <span>اللوحة الرئيسية</span></a>
+            <a href="tests-catalog.html" class="portal-nav-item"><i class="fas fa-flask"></i> <span>قائمة التحاليل</span></a>
+            <a href="register-patient.html" class="portal-nav-item"><i class="fas fa-user-plus"></i> <span>تسجيل مريض</span></a>
+            <a href="patients-list.html" class="portal-nav-item"><i class="fas fa-users"></i> <span>قائمة المرضى</span></a>
+            <a href="about.html" class="portal-nav-item active"><i class="fas fa-info-circle"></i> <span>عن المخبر</span></a>
+            <a href="contact.html" class="portal-nav-item"><i class="fas fa-headset"></i> <span>الدعم والاتصال</span></a>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="faq.html" class="portal-nav-item"><i class="fas fa-question-circle"></i> <span>الأسئلة الشائعة</span></a>
+        </div>
+    </aside>
+
+    <main class="portal-main">
+        <div class="portal-main-inner">
+            <div class="portal-page-header">
+                <div>
+                    <h2><i class="fas fa-info-circle"></i> عن المختبر</h2>
+                    <p>تعرف على مختبر RAED LAB ودوره في تقديم التحاليل الطبية في الوادي.</p>
+                </div>
+            </div>
+
+            <section class="about-content" style="padding:0;background:transparent;">
+                <div class="container" style="padding:0;max-width:none;">
+                    <div class="about-grid">
+                        <div class="about-card"><div class="about-icon"><i class="fas fa-microscope"></i></div><h3>أحدث التقنيات</h3><p>نستخدم أجهزة متطورة وتقنيات حديثة لضمان دقة النتائج</p></div>
+                        <div class="about-card"><div class="about-icon"><i class="fas fa-user-md"></i></div><h3>فريق متخصص</h3><p>طاقم طبي مؤهل وخبرة واسعة في مجال التحاليل الطبية</p></div>
+                        <div class="about-card"><div class="about-icon"><i class="fas fa-clock"></i></div><h3>سرعة في النتائج</h3><p>نحرص على تقديم النتائج في أسرع وقت مع ضمان الجودة</p></div>
+                        <div class="about-card"><div class="about-icon"><i class="fas fa-shield-alt"></i></div><h3>سرية تامة</h3><p>نلتزم بحماية خصوصية المرضى والحفاظ على سرية البيانات</p></div>
+                    </div>
+
+                    <div class="about-text">
+                        <h3>مرحباً بكم في RAED LAB</h3>
+                        <p>مختبر RAED LAB هو مختبر متخصص في التحاليل الطبية، يقع في مدينة الوادي بالجزائر. نقدم مجموعة شاملة من التحاليل الطبية تشمل أكثر من 260 تحليلاً طبياً مختلفاً، موزعة على عدة فروع في المنطقة.</p>
+                        <p>نسعى دائماً لتقديم خدمات عالية الجودة بأسعار مناسبة، مع الحرص على استخدام أحدث الأجهزة والتقنيات لضمان دقة النتائج. هذه البوابة موجهة لاستخدام موظفي الفروع لتنظيم العمل اليومي.</p>
+                        <h3>خدماتنا</h3>
+                        <ul class="services-list">
+                            <li><i class="fas fa-check-circle"></i> تحاليل الدم الشاملة</li>
+                            <li><i class="fas fa-check-circle"></i> تحاليل الهرمونات</li>
+                            <li><i class="fas fa-check-circle"></i> تحاليل المناعة</li>
+                            <li><i class="fas fa-check-circle"></i> تحاليل الأمراض المعدية</li>
+                            <li><i class="fas fa-check-circle"></i> تحاليل الخصوبة</li>
+                            <li><i class="fas fa-check-circle"></i> تحاليل الغدة الدرقية</li>
+                            <li><i class="fas fa-check-circle"></i> واسمات السرطان</li>
+                            <li><i class="fas fa-check-circle"></i> تحاليل PCR</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/portal-shared.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

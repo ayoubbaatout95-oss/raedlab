@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="قائمة المرضى - بوابة العاملين RAED LAB">
+    <title>قائمة المرضى - RAED LAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="portal-body">
+
+    <!-- TOP BAR -->
+    <header class="portal-topbar">
+        <div class="portal-topbar-brand">
+            <button class="portal-mobile-toggle" id="portalMobileToggle"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="portal-topbar-logo"><i class="fas fa-microscope"></i><span>RAED LAB</span></a>
+        </div>
+        <div class="portal-topbar-search autocomplete-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="بحث سريع: تحليل، مريض، رمز...">
+        </div>
+        <div class="portal-topbar-actions">
+            <button class="portal-icon-btn"><i class="fas fa-bell"></i><span class="dot"></span></button>
+            <button class="portal-icon-btn"><i class="fas fa-cog"></i></button>
+            <div class="portal-avatar">RL</div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <div class="portal-sidebar-overlay" id="portalSidebarOverlay"></div>
+    <aside class="portal-sidebar" id="portalSidebar">
+        <div class="portal-sidebar-header"><h2>RAED LAB</h2><p>بوابة العاملين</p></div>
+        <nav class="portal-sidebar-nav">
+            <a href="index.html" class="portal-nav-item"><i class="fas fa-th-large"></i> <span>اللوحة الرئيسية</span></a>
+            <a href="tests-catalog.html" class="portal-nav-item"><i class="fas fa-flask"></i> <span>قائمة التحاليل</span></a>
+            <a href="register-patient.html" class="portal-nav-item"><i class="fas fa-user-plus"></i> <span>تسجيل مريض</span></a>
+            <a href="patients-list.html" class="portal-nav-item active"><i class="fas fa-users"></i> <span>قائمة المرضى</span></a>
+            <a href="about.html" class="portal-nav-item"><i class="fas fa-info-circle"></i> <span>عن المخبر</span></a>
+            <a href="contact.html" class="portal-nav-item"><i class="fas fa-headset"></i> <span>الدعم والاتصال</span></a>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="faq.html" class="portal-nav-item"><i class="fas fa-question-circle"></i> <span>الأسئلة الشائعة</span></a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="portal-main">
+        <div class="portal-main-inner">
+
+            <div class="portal-page-header">
+                <div>
+                    <h2><i class="fas fa-users"></i> قائمة المرضى</h2>
+                    <p>إدارة وعرض السجلات المسجلة في جميع الفروع.</p>
+                </div>
+                <div class="header-actions">
+                    <a href="register-patient.html" class="btn btn-primary"><i class="fas fa-user-plus"></i> مريض جديد</a>
+                </div>
+            </div>
+
+            <section class="patients-section" style="padding:0;background:transparent;">
+                <div class="container" style="padding:0;max-width:none;">
+                    <!-- Statistics -->
+                    <div class="stats-cards" id="stats">
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+                            <div class="stat-info"><h4 id="totalPatients">0</h4><p>إجمالي المرضى</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="fas fa-flask"></i></div>
+                            <div class="stat-info"><h4 id="totalTests">0</h4><p>إجمالي التحاليل</p></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange"><i class="fas fa-coins"></i></div>
+                            <div class="stat-info"><h4 id="totalRevenue">0 دج</h4><p>إجمالي الإيرادات</p></div>
+                        </div>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="filters-bar">
+                        <div class="search-wrapper autocomplete-wrapper" style="flex:1;margin:0;">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="patientSearchInput" class="search-input" placeholder="ابحث بالاسم أو رقم الهاتف..." autocomplete="off">
+                        </div>
+                        <select id="branchFilter">
+                            <option value="all">جميع الفروع</option>
+                            <option value="فرع العقلة">فرع العقلة</option>
+                            <option value="فرع عيادة غمام حاسي خليفة">فرع عيادة غمام حاسي خليفة</option>
+                            <option value="فرع النخلة">فرع النخلة</option>
+                            <option value="فرع صيدلية غمام دوار الماء">فرع صيدلية غمام دوار الماء</option>
+                            <option value="فرع الازدهار البياضة">فرع الازدهار البياضة</option>
+                            <option value="فرع الازدهار اولاد حمد">فرع الازدهار اولاد حمد</option>
+                            <option value="فرع حساني عبد الكريم الزقم">فرع حساني عبد الكريم الزقم</option>
+                            <option value="فرع الطالب العربي">فرع الطالب العربي</option>
+                            <option value="فرع عيادة مريم ميه ونسة">فرع عيادة مريم ميه ونسة</option>
+                            <option value="فرع بالي واد العلندة">فرع بالي واد العلندة</option>
+                            <option value="فرع كينة الرباح">فرع كينة الرباح</option>
+                        </select>
+                        <select id="testFilter">
+                            <option value="all">جميع التحاليل</option>
+                        </select>
+                        <input type="date" id="dateFilter" style="padding:10px 14px;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-family:var(--font);font-size:0.9rem;">
+                        <button class="btn btn-secondary" id="resetFiltersBtn" title="إعادة تعيين"><i class="fas fa-redo"></i></button>
+                    </div>
+
+                    <!-- Patients Table -->
+                    <div class="patients-table-wrapper">
+                        <div class="patients-table-header">
+                            <h3>السجلات (<span id="recordsCount">0</span>)</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Excel</button>
+                                <button class="btn btn-secondary" id="exportPDFBtn"><i class="fas fa-file-pdf"></i> PDF</button>
+                                <button class="btn btn-danger" id="clearAllBtn"><i class="fas fa-trash"></i> مسح الكل</button>
+                            </div>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="patients-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>اسم المريض</th>
+                                        <th>العمر</th>
+                                        <th>الجنس</th>
+                                        <th>الهاتف</th>
+                                        <th>الفرع</th>
+                                        <th>التاريخ</th>
+                                        <th style="min-width:220px;">التحاليل المطلوبة</th>
+                                        <th>العدد</th>
+                                        <th>المبلغ</th>
+                                        <th>إجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="patientsTableBody">
+                                    <tr><td colspan="11" style="text-align:center;padding:40px;color:var(--gray-400);">لا توجد بيانات مرضى مسجلة</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Patient Details Modal -->
+    <div class="test-info-modal" id="patientDetailsModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content" style="max-width:650px;">
+            <button class="modal-close" id="closeDetailsModal"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <i class="fas fa-user-circle" style="font-size:3rem;"></i>
+                <h3 id="modalPatientName">اسم المريض</h3>
+            </div>
+            <div class="modal-body" id="patientDetailsBody"></div>
+            <div class="modal-footer" style="display:flex;gap:8px;justify-content:center;">
+                <button class="btn btn-primary" id="printPatientBtn"><i class="fas fa-print"></i> طباعة</button>
+                <button class="btn btn-secondary" id="closeModalBtn">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hidden header element required by JS for scroll handler -->
+    <header class="header" id="header" style="display:none;"></header>
+    <nav id="navMenu" style="display:none;"></nav>
+    <button id="hamburger" style="display:none;"></button>
+    <div id="navOverlay" style="display:none;"></div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/portal-shared.js"></script>
+    <script src="js/patients-list.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/patients-list-extras.js"></script>
+</body>
+</html>

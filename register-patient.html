@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="تسجيل مريض جديد - بوابة العاملين RAED LAB">
+    <title>تسجيل مريض - RAED LAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="portal-body">
+
+    <!-- TOP BAR -->
+    <header class="portal-topbar">
+        <div class="portal-topbar-brand">
+            <button class="portal-mobile-toggle" id="portalMobileToggle" aria-label="القائمة"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="portal-topbar-logo"><i class="fas fa-microscope"></i><span>RAED LAB</span></a>
+        </div>
+        <div class="portal-topbar-search autocomplete-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="بحث سريع: تحليل، مريض، رمز...">
+        </div>
+        <div class="portal-topbar-actions">
+            <button class="portal-icon-btn"><i class="fas fa-bell"></i><span class="dot"></span></button>
+            <button class="portal-icon-btn"><i class="fas fa-cog"></i></button>
+            <div class="portal-avatar">RL</div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <div class="portal-sidebar-overlay" id="portalSidebarOverlay"></div>
+    <aside class="portal-sidebar" id="portalSidebar">
+        <div class="portal-sidebar-header"><h2>RAED LAB</h2><p>بوابة العاملين</p></div>
+        <nav class="portal-sidebar-nav">
+            <a href="index.html" class="portal-nav-item"><i class="fas fa-th-large"></i> <span>اللوحة الرئيسية</span></a>
+            <a href="tests-catalog.html" class="portal-nav-item"><i class="fas fa-flask"></i> <span>قائمة التحاليل</span></a>
+            <a href="register-patient.html" class="portal-nav-item active"><i class="fas fa-user-plus"></i> <span>تسجيل مريض</span></a>
+            <a href="patients-list.html" class="portal-nav-item"><i class="fas fa-users"></i> <span>قائمة المرضى</span></a>
+            <a href="about.html" class="portal-nav-item"><i class="fas fa-info-circle"></i> <span>عن المخبر</span></a>
+            <a href="contact.html" class="portal-nav-item"><i class="fas fa-headset"></i> <span>الدعم والاتصال</span></a>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="faq.html" class="portal-nav-item"><i class="fas fa-question-circle"></i> <span>الأسئلة الشائعة</span></a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="portal-main">
+        <div class="portal-main-inner">
+
+            <div class="portal-page-header">
+                <div>
+                    <h2><i class="fas fa-user-plus"></i> تسجيل مريض جديد</h2>
+                    <p>إضافة بيانات المريض واختيار التحاليل المطلوبة — استخدم خانة البحث للإكمال التلقائي.</p>
+                </div>
+                <div class="header-actions">
+                    <a href="patients-list.html" class="btn btn-secondary"><i class="fas fa-users"></i> قائمة المرضى</a>
+                    <a href="tests-catalog.html" class="btn btn-secondary"><i class="fas fa-flask"></i> الكتالوج</a>
+                </div>
+            </div>
+
+            <!-- Pre-select notice (shows if user came from catalog with selected tests) -->
+            <div class="portal-cta-banner hidden" id="preselectNotice">
+                <div class="portal-cta-content">
+                    <div class="portal-cta-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="portal-cta-text">
+                        <h4>تم تحميل <span id="preselectCount">0</span> تحليل من الكتالوج تلقائياً</h4>
+                        <p>أكمل بيانات المريض واضغط حفظ لإنهاء التسجيل.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registration Form -->
+            <section class="registration-section" style="padding:0;background:transparent;">
+                <div class="container" style="padding:0;max-width:none;">
+                    <div class="registration-container">
+                        <!-- Patient Information Form -->
+                        <div class="patient-form-card">
+                            <div class="form-header"><i class="fas fa-id-card"></i><h3>بيانات المريض</h3></div>
+                            <form id="patientForm" class="patient-form" novalidate>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="patientName"><i class="fas fa-user"></i> اسم المريض الكامل *</label>
+                                        <input type="text" id="patientName" name="patientName" required placeholder="أدخل الاسم الكامل" minlength="3" autocomplete="off">
+                                        <span class="error-msg">يرجى إدخال اسم المريض (3 أحرف على الأقل)</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="patientAge"><i class="fas fa-birthday-cake"></i> العمر *</label>
+                                        <input type="number" id="patientAge" name="patientAge" required placeholder="العمر" min="0" max="150">
+                                        <span class="error-msg">يرجى إدخال عمر صحيح (0-150)</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="patientGender"><i class="fas fa-venus-mars"></i> الجنس *</label>
+                                        <select id="patientGender" name="patientGender" required>
+                                            <option value="">اختر الجنس</option>
+                                            <option value="ذكر">ذكر</option>
+                                            <option value="أنثى">أنثى</option>
+                                        </select>
+                                        <span class="error-msg">يرجى اختيار الجنس</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="patientPhone"><i class="fas fa-phone"></i> رقم الهاتف *</label>
+                                        <input type="tel" id="patientPhone" name="patientPhone" required placeholder="05XX XX XX XX" maxlength="14" pattern="^0[0-9]{8,9}$" autocomplete="off">
+                                        <span class="error-msg">يرجى إدخال رقم هاتف صحيح (يبدأ بـ 0)</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="branchName"><i class="fas fa-building"></i> فرع المختبر *</label>
+                                        <select id="branchName" name="branchName" required>
+                                            <option value="">اختر الفرع</option>
+                                            <option value="فرع العقلة">فرع العقلة</option>
+                                            <option value="فرع عيادة غمام حاسي خليفة">فرع عيادة غمام حاسي خليفة</option>
+                                            <option value="فرع النخلة">فرع النخلة</option>
+                                            <option value="فرع صيدلية غمام دوار الماء">فرع صيدلية غمام دوار الماء</option>
+                                            <option value="فرع الازدهار البياضة">فرع الازدهار البياضة</option>
+                                            <option value="فرع الازدهار اولاد حمد">فرع الازدهار اولاد حمد</option>
+                                            <option value="فرع حساني عبد الكريم الزقم">فرع حساني عبد الكريم الزقم</option>
+                                            <option value="فرع الطالب العربي">فرع الطالب العربي</option>
+                                            <option value="فرع عيادة مريم ميه ونسة">فرع عيادة مريم ميه ونسة</option>
+                                            <option value="فرع بالي واد العلندة">فرع بالي واد العلندة</option>
+                                            <option value="فرع كينة الرباح">فرع كينة الرباح</option>
+                                        </select>
+                                        <span class="error-msg">يرجى اختيار الفرع</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registrationDate"><i class="fas fa-calendar"></i> تاريخ التسجيل *</label>
+                                        <input type="date" id="registrationDate" name="registrationDate" required>
+                                        <span class="error-msg">يرجى اختيار التاريخ</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="patientNotes"><i class="fas fa-sticky-note"></i> ملاحظات إضافية</label>
+                                    <textarea id="patientNotes" name="patientNotes" rows="3" placeholder="أي ملاحظات خاصة بالمريض أو التحاليل"></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Tests Selection -->
+                        <div class="tests-selection-card">
+                            <div class="form-header"><i class="fas fa-flask"></i><h3>اختيار التحاليل</h3></div>
+
+                            <div class="search-box-small autocomplete-wrapper">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="testSearch" placeholder="ابحث وأضف بسرعة (مثل: CBC, GLY...)" class="search-input" autocomplete="off">
+                            </div>
+
+                            <div class="selected-tests-summary" id="selectedTestsSummary">
+                                <div class="summary-item"><span>عدد التحاليل:</span><strong id="selectedCount">0</strong></div>
+                                <div class="summary-item"><span>المجموع:</span><strong id="selectedTotal" class="price-highlight">0 دج</strong></div>
+                            </div>
+
+                            <div class="tests-list-small" id="testsListSmall"></div>
+
+                            <div class="selected-tests-list" id="selectedTestsList">
+                                <h4><i class="fas fa-list-check"></i> التحاليل المختارة:</h4>
+                                <div id="selectedTestsItems">
+                                    <p class="empty-message">لم يتم اختيار أي تحليل بعد</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-success btn-large" id="savePatientBtn">
+                            <i class="fas fa-save"></i> حفظ بيانات المريض
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-large" id="resetFormBtn">
+                            <i class="fas fa-redo"></i> إعادة تعيين
+                        </button>
+                        <a href="patients-list.html" class="btn btn-primary btn-large">
+                            <i class="fas fa-users"></i> قائمة المرضى
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hidden header element required by registration JS -->
+    <header class="header" id="header" style="display:none;"></header>
+    <nav id="navMenu" style="display:none;"></nav>
+    <button id="hamburger" style="display:none;"></button>
+    <div id="navOverlay" style="display:none;"></div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/portal-shared.js"></script>
+    <script src="js/patient-registration.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/registration-extras.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="قائمة التحاليل - مخبر RAED LAB">
+    <title>قائمة التحاليل - RAED LAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="portal-body">
+
+    <!-- TOP BAR -->
+    <header class="portal-topbar">
+        <div class="portal-topbar-brand">
+            <button class="portal-mobile-toggle" id="portalMobileToggle" aria-label="القائمة"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="portal-topbar-logo"><i class="fas fa-microscope"></i><span>RAED LAB</span></a>
+        </div>
+        <div class="portal-topbar-search autocomplete-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="بحث سريع: تحليل، مريض، رمز...">
+        </div>
+        <div class="portal-topbar-actions">
+            <button class="portal-icon-btn"><i class="fas fa-bell"></i><span class="dot"></span></button>
+            <button class="portal-icon-btn"><i class="fas fa-cog"></i></button>
+            <div class="portal-avatar">RL</div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <div class="portal-sidebar-overlay" id="portalSidebarOverlay"></div>
+    <aside class="portal-sidebar" id="portalSidebar">
+        <div class="portal-sidebar-header"><h2>RAED LAB</h2><p>بوابة العاملين</p></div>
+        <nav class="portal-sidebar-nav">
+            <a href="index.html" class="portal-nav-item"><i class="fas fa-th-large"></i> <span>اللوحة الرئيسية</span></a>
+            <a href="tests-catalog.html" class="portal-nav-item active"><i class="fas fa-flask"></i> <span>قائمة التحاليل</span></a>
+            <a href="register-patient.html" class="portal-nav-item"><i class="fas fa-user-plus"></i> <span>تسجيل مريض</span></a>
+            <a href="patients-list.html" class="portal-nav-item"><i class="fas fa-users"></i> <span>قائمة المرضى</span></a>
+            <a href="about.html" class="portal-nav-item"><i class="fas fa-info-circle"></i> <span>عن المخبر</span></a>
+            <a href="contact.html" class="portal-nav-item"><i class="fas fa-headset"></i> <span>الدعم والاتصال</span></a>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="faq.html" class="portal-nav-item"><i class="fas fa-question-circle"></i> <span>الأسئلة الشائعة</span></a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="portal-main">
+        <div class="portal-main-inner">
+
+            <!-- Page header -->
+            <div class="portal-page-header">
+                <div>
+                    <h2><i class="fas fa-flask"></i> قائمة التحاليل</h2>
+                    <p>اختر التحاليل المطلوبة لإعداد طلب المريض — بحث ذكي مع إكمال تلقائي.</p>
+                </div>
+                <div class="header-actions">
+                    <span class="status-pill" style="background:var(--primary-50);color:var(--primary);padding:6px 14px;border-radius:999px;font-weight:700;font-size:0.85rem;">
+                        <i class="fas fa-flask"></i> <span id="totalTestsHero">203</span> تحليل
+                    </span>
+                </div>
+            </div>
+
+            <!-- Smart CTA banner: shows after tests are selected -->
+            <div class="portal-cta-banner hidden" id="ctaBanner">
+                <div class="portal-cta-content">
+                    <div class="portal-cta-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="portal-cta-text">
+                        <h4>تم اختيار <span id="ctaCount">0</span> تحليل — جاهز للتسجيل؟</h4>
+                        <p>سجّل المريض مباشرة بهذه التحاليل بنقرة واحدة لتوفير الوقت.</p>
+                    </div>
+                </div>
+                <a href="#" class="portal-cta-btn" id="ctaRegisterBtn">
+                    <i class="fas fa-user-plus"></i> تسجيل مريض جديد بهذه التحاليل
+                </a>
+            </div>
+
+            <!-- Filters -->
+            <section class="filters-section" id="filtersSection" style="margin:0 0 24px;padding:20px;background:#fff;border:1px solid var(--gray-200);border-radius:12px;">
+                <div class="search-wrapper autocomplete-wrapper" style="margin-bottom:16px;">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الاختصار (مثل: TSH, CRP, GLY, BHCG...)" class="search-input" autocomplete="off">
+                </div>
+
+                <div class="tube-filters" id="tubeFilters">
+                    <span class="tube-filters-label"><i class="fas fa-vial"></i> حسب الأنبوب:</span>
+                    <button class="tube-filter-btn active" data-tube="all"><span class="tube-dot-filter" style="background: linear-gradient(135deg, #C41E3A, #2E8B57, #8B008B, #1E90FF);"></span>الكل</button>
+                    <button class="tube-filter-btn" data-tube="Tube Sec"><span class="tube-dot-filter" style="background: #C41E3A;"></span>Tube Sec</button>
+                    <button class="tube-filter-btn" data-tube="Tube Hépariné"><span class="tube-dot-filter" style="background: #2E8B57;"></span>Tube Hépariné</button>
+                    <button class="tube-filter-btn" data-tube="Tube EDTA"><span class="tube-dot-filter" style="background: #8B008B;"></span>Tube EDTA</button>
+                    <button class="tube-filter-btn" data-tube="Tube Citrate"><span class="tube-dot-filter" style="background: #1E90FF;"></span>Tube Citrate</button>
+                    <button class="tube-filter-btn" data-tube="Flacon Urine 24H"><span class="tube-dot-filter" style="background: #FFD700;"></span>Urine 24H</button>
+                    <button class="tube-filter-btn" data-tube="Pot Urine"><span class="tube-dot-filter" style="background: #333333;"></span>Pot Urine</button>
+                    <button class="tube-filter-btn" data-tube="Pot à Selles"><span class="tube-dot-filter" style="background: #8B4513;"></span>Pot Selles</button>
+                    <button class="tube-filter-btn" data-tube="Écouvillon / Flacon Stérile"><span class="tube-dot-filter" style="background: #FF6347;"></span>Écouvillon</button>
+                </div>
+
+                <div class="category-filters" id="categoryFilters">
+                    <button class="filter-btn active" data-category="all">الكل</button>
+                    <button class="filter-btn" data-category="1">1</button>
+                    <button class="filter-btn" data-category="A">A</button>
+                    <button class="filter-btn" data-category="B">B</button>
+                    <button class="filter-btn" data-category="C">C</button>
+                    <button class="filter-btn" data-category="D">D</button>
+                    <button class="filter-btn" data-category="E">E</button>
+                    <button class="filter-btn" data-category="F">F</button>
+                    <button class="filter-btn" data-category="G">G</button>
+                    <button class="filter-btn" data-category="H">H</button>
+                    <button class="filter-btn" data-category="I">I</button>
+                    <button class="filter-btn" data-category="L">L</button>
+                    <button class="filter-btn" data-category="M">M</button>
+                    <button class="filter-btn" data-category="N">N</button>
+                    <button class="filter-btn" data-category="O">O</button>
+                    <button class="filter-btn" data-category="P">P</button>
+                    <button class="filter-btn" data-category="R">R</button>
+                    <button class="filter-btn" data-category="S">S</button>
+                    <button class="filter-btn" data-category="T">T</button>
+                    <button class="filter-btn" data-category="U">U</button>
+                    <button class="filter-btn" data-category="V">V</button>
+                    <button class="filter-btn" data-category="Z">Z</button>
+                </div>
+
+                <div class="sort-controls">
+                    <label for="sortSelect">الترتيب:</label>
+                    <select id="sortSelect" class="sort-select">
+                        <option value="name-asc">الاسم (أ - ي)</option>
+                        <option value="name-desc">الاسم (ي - أ)</option>
+                        <option value="price-asc">السعر (الأقل أولاً)</option>
+                        <option value="price-desc">السعر (الأعلى أولاً)</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Tests Grid + Cart -->
+            <section class="tests-section" style="padding:0;">
+                <div class="container-with-sidebar" style="padding:0;max-width:none;">
+                    <!-- Cart Sidebar -->
+                    <aside class="cart-sidebar" id="cartPanel">
+                        <div class="cart-header">
+                            <h3><i class="fas fa-shopping-cart"></i> التحاليل المختارة</h3>
+                        </div>
+                        <div class="cart-body">
+                            <div class="cart-items" id="cartItems">
+                                <p class="empty-cart"><i class="fas fa-cart-plus"></i>لم يتم اختيار أي تحليل بعد</p>
+                            </div>
+                            <div class="cart-summary">
+                                <div class="cart-total"><span>عدد التحاليل:</span><span id="cartCount">0</span></div>
+                                <div class="cart-total price-total"><span>المجموع الكلي:</span><span id="cartTotal">0 دج</span></div>
+                            </div>
+                            <div class="cart-actions">
+                                <a href="register-patient.html" class="btn" id="cartRegisterBtn" style="background:var(--primary);color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:10px;font-weight:700;">
+                                    <i class="fas fa-user-plus"></i> تسجيل مريض
+                                </a>
+                                <button class="btn btn-whatsapp" id="shareWhatsapp"><i class="fab fa-whatsapp"></i> واتساب</button>
+                                <button class="btn btn-secondary" id="printBtn"><i class="fas fa-print"></i> طباعة</button>
+                                <button class="btn btn-danger" id="clearCart"><i class="fas fa-trash"></i> مسح</button>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Tests List -->
+                    <div class="main-content">
+                        <div class="tests-header">
+                            <h3>قائمة التحاليل</h3>
+                            <span class="tests-count">العدد: <span id="testsCount">0</span></span>
+                        </div>
+                        <div id="testsList" class="tests-list"></div>
+                        <div id="noResults" class="no-results" style="display: none;">
+                            <i class="fas fa-search"></i>
+                            <p>لم يتم العثور على نتائج</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Floating Cart Button (Mobile) -->
+    <button class="floating-cart-btn" id="floatingCartBtn" aria-label="سلة التحاليل">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="floating-cart-badge" id="floatingCartBadge" style="display:none;">0</span>
+    </button>
+
+    <!-- Mobile Cart Drawer -->
+    <div class="cart-drawer-overlay" id="cartDrawerOverlay"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-handle"></div>
+        <div class="cart-header"><h3><i class="fas fa-shopping-cart"></i> التحاليل المختارة</h3></div>
+        <div class="cart-body">
+            <div class="cart-items" id="cartItemsMobile" style="max-height: 40vh;"></div>
+            <div class="cart-summary">
+                <div class="cart-total"><span>عدد التحاليل:</span><span id="cartCountMobile">0</span></div>
+                <div class="cart-total price-total"><span>المجموع الكلي:</span><span id="cartTotalMobile">0 دج</span></div>
+            </div>
+            <div class="cart-actions">
+                <a href="register-patient.html" class="btn" id="cartRegisterBtnMobile" style="background:var(--primary);color:#fff;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:10px;font-weight:700;">
+                    <i class="fas fa-user-plus"></i> تسجيل مريض
+                </a>
+                <button class="btn btn-whatsapp" id="shareWhatsappMobile"><i class="fab fa-whatsapp"></i> واتساب</button>
+                <button class="btn btn-secondary" id="printBtnMobile"><i class="fas fa-print"></i> طباعة</button>
+                <button class="btn btn-danger" id="clearCartMobile"><i class="fas fa-trash"></i> مسح</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hidden header element (referenced by main.js for scroll) -->
+    <header class="header" id="header" style="display:none;"></header>
+
+    <!-- Hidden nav elements referenced by main.js -->
+    <nav id="navMenu" style="display:none;"></nav>
+    <button id="hamburger" style="display:none;"></button>
+    <div id="navOverlay" style="display:none;"></div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/test-info.js"></script>
+    <script src="js/portal-shared.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/catalog-extras.js"></script>
+</body>
+</html>

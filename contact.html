@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="الدعم والاتصال RAED LAB">
+    <title>الدعم والاتصال - RAED LAB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="portal-body">
+
+    <header class="portal-topbar">
+        <div class="portal-topbar-brand">
+            <button class="portal-mobile-toggle" id="portalMobileToggle"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="portal-topbar-logo"><i class="fas fa-microscope"></i><span>RAED LAB</span></a>
+        </div>
+        <div class="portal-topbar-search autocomplete-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="globalSearch" placeholder="بحث سريع: تحليل، مريض، رمز...">
+        </div>
+        <div class="portal-topbar-actions">
+            <button class="portal-icon-btn"><i class="fas fa-bell"></i><span class="dot"></span></button>
+            <button class="portal-icon-btn"><i class="fas fa-cog"></i></button>
+            <div class="portal-avatar">RL</div>
+        </div>
+    </header>
+
+    <div class="portal-sidebar-overlay" id="portalSidebarOverlay"></div>
+    <aside class="portal-sidebar" id="portalSidebar">
+        <div class="portal-sidebar-header"><h2>RAED LAB</h2><p>بوابة العاملين</p></div>
+        <nav class="portal-sidebar-nav">
+            <a href="index.html" class="portal-nav-item"><i class="fas fa-th-large"></i> <span>اللوحة الرئيسية</span></a>
+            <a href="tests-catalog.html" class="portal-nav-item"><i class="fas fa-flask"></i> <span>قائمة التحاليل</span></a>
+            <a href="register-patient.html" class="portal-nav-item"><i class="fas fa-user-plus"></i> <span>تسجيل مريض</span></a>
+            <a href="patients-list.html" class="portal-nav-item"><i class="fas fa-users"></i> <span>قائمة المرضى</span></a>
+            <a href="about.html" class="portal-nav-item"><i class="fas fa-info-circle"></i> <span>عن المخبر</span></a>
+            <a href="contact.html" class="portal-nav-item active"><i class="fas fa-headset"></i> <span>الدعم والاتصال</span></a>
+        </nav>
+        <div class="portal-sidebar-footer">
+            <a href="faq.html" class="portal-nav-item"><i class="fas fa-question-circle"></i> <span>الأسئلة الشائعة</span></a>
+        </div>
+    </aside>
+
+    <main class="portal-main">
+        <div class="portal-main-inner">
+            <div class="portal-page-header">
+                <div>
+                    <h2><i class="fas fa-headset"></i> الدعم والاتصال</h2>
+                    <p>تواصل مع الإدارة العامة أو الفروع الأخرى للدعم الفني والإداري.</p>
+                </div>
+            </div>
+
+            <section class="contact-section" style="padding:0;background:transparent;">
+                <div class="container" style="padding:0;max-width:none;">
+                    <div class="contact-grid">
+                        <div class="contact-info-box">
+                            <h3>معلومات الاتصال</h3>
+                            <div class="contact-detail">
+                                <div class="contact-detail-icon"><i class="fas fa-phone"></i></div>
+                                <div class="contact-detail-text">
+                                    <h4>الهاتف</h4>
+                                    <p><a href="tel:+21332134146">032134146</a></p>
+                                    <p><a href="tel:+213770807308">0770807308</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-detail">
+                                <div class="contact-detail-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="contact-detail-text">
+                                    <h4>البريد الإلكتروني</h4>
+                                    <p><a href="mailto:contact.raedlab@gmail.com">contact.raedlab@gmail.com</a></p>
+                                </div>
+                            </div>
+                            <div class="contact-detail">
+                                <div class="contact-detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <div class="contact-detail-text">
+                                    <h4>المقر الرئيسي</h4>
+                                    <p>بجوار المنزل المالي، حي الرمال، الوادي</p>
+                                </div>
+                            </div>
+                            <div class="contact-detail">
+                                <div class="contact-detail-icon"><i class="fas fa-clock"></i></div>
+                                <div class="contact-detail-text">
+                                    <h4>ساعات الدعم</h4>
+                                    <p>مفتوح 24 ساعة على 24 ساعة </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-form-box">
+                            <h3>إرسال طلب دعم</h3>
+                            <form class="contact-form" id="contactForm">
+                                <div class="form-group">
+                                    <label for="contactName"><i class="fas fa-user"></i> اسم الموظف</label>
+                                    <input type="text" id="contactName" placeholder="الاسم الكامل" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactBranch"><i class="fas fa-building"></i> الفرع</label>
+                                    <input type="text" id="contactBranch" placeholder="اسم الفرع">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactPhone"><i class="fas fa-phone"></i> رقم الهاتف</label>
+                                    <input type="tel" id="contactPhone" placeholder="05XX XX XX XX">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactMessage"><i class="fas fa-comment"></i> وصف المشكلة / الاستفسار</label>
+                                    <textarea id="contactMessage" rows="5" placeholder="صف الحالة بالتفصيل..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-large" style="width:100%">
+                                    <i class="fas fa-paper-plane"></i> إرسال الطلب
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/portal-shared.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        // Simple form handler
+        document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            pToast('تم إرسال الطلب بنجاح. سيتم الرد قريباً.', 'success');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
