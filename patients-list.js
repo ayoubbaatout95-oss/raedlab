@@ -1,4 +1,4 @@
-// RAED LAB - Modern Patients List (Cloud, Admin Support & Styled Badges)
+// RAED LAB - Final Corrected Version
 import { db, auth } from './firebase-config.js';
 import { collection, getDocs, query, orderBy, where, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
@@ -16,36 +16,29 @@ const totalRevenueEl = document.getElementById('totalRevenue');
 const recordsCount = document.getElementById('recordsCount');
 const exportPDFBtn = document.getElementById('exportPDFBtn');
 
-// ============= 2. Authentication & Data Loading =============
-
+// ============= 2. Authentication & Security =============
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // حساب المدير الرئيسي
+        // حساب المدير (Admin)
         const adminEmail = "contact.raedlab@gmail.com"; 
         const isAdmin = (user.email === adminEmail);
         loadPatients(user.uid, isAdmin);
     } else {
-        // توجيه لصفحة الدخول إذا لم يتم تسجيل الدخول
         window.location.href = 'login.html';
     }
 });
 
 async function loadPatients(uid, isAdmin) {
     try {
-        patientsTableBody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:40px;">جاري جلب البيانات السحابية...</td></tr>';
+        patientsTableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;">جاري تحميل البيانات...</td></tr>';
         
         let q;
         if (isAdmin) {
-            // المدير يرى كل البيانات
+            // المدير يرى كل الفروع
             q = query(collection(db, "patients"), orderBy("registeredAt", "desc"));
-            showToast('وضع المدير: عرض كافة الفروع', 'success');
         } else {
-            // الفرع يرى بياناته فقط بناءً على الـ UID الخاص به
-            q = query(
-                collection(db, "patients"), 
-                where("branchId", "==", uid), 
-                orderBy("registeredAt", "desc")
-            );
+            // كل فرع يرى مرضاه فقط بناءً على UID
+            q = query(collection(db, "patients"), where("branchId", "==", uid), orderBy("registeredAt", "desc"));
         }
 
         const querySnapshot = await getDocs(q);
@@ -59,12 +52,11 @@ async function loadPatients(uid, isAdmin) {
         updateStatistics();
     } catch (error) {
         console.error(error);
-        showToast('خطأ في جلب البيانات (تأكد من إعدادات الفهرسة Index)', 'error');
+        showToast('خطأ في جلب البيانات', 'error');
     }
 }
 
-// ============= 3. Core Functions =============
-
+// ============= 3. Rendering Table (Corrected Columns) =============
 function renderPatientsTable() {
     recordsCount.textContent = filteredPatients.length;
     patientsTableBody.innerHTML = '';
@@ -72,37 +64,36 @@ function renderPatientsTable() {
     filteredPatients.forEach((p, i) => {
         const tr = document.createElement('tr');
         
-        // تحويل التحاليل إلى بطاقات ملونة (Badges) داخل الجدول
+        // تحويل التحاليل إلى بطاقات ملونة أنيقة
         const testsBadges = (p.tests || []).map(t => `
-            <span style="display:inline-block; background:#F0FDFA; color:#0D9488; padding:2px 6px; border-radius:6px; margin:2px; font-size:0.7rem; border:1px solid #CCFBF1; font-weight:bold; white-space:nowrap;">
+            <span style="display:inline-block; background:#F0FDFA; color:#0D9488; padding:2px 6px; border-radius:6px; margin:2px; font-size:0.7rem; border:1px solid #CCFBF1; font-weight:bold;">
                 ${t.shortName || t.name}
             </span>
         `).join('');
 
+        // الترتيب الدقيق للأعمدة بناءً على الصورة المرفقة
         tr.innerHTML = `
             <td>${i + 1}</td>
-            <td style="font-weight:bold; min-width:120px;">${p.name}</td>
+            <td style="font-weight:bold;">${p.name}</td>
             <td>${p.age || '-'} سنة</td>
             <td>${p.gender || '-'}</td>
             <td>${p.phone || '-'}</td>
-            
-            <td style="max-width: 250px;">
-                <div style="display: flex; flex-wrap: wrap; gap: 2px;">
-                    ${testsBadges || '<span style="color:#999">لا يوجد</span>'}
-                </div>
-            </td>
-
             <td>
                 <span class="branch-tag" style="background:#E0F2F1; color:#0D9488; padding:4px 8px; border-radius:4px; font-size:0.75rem; font-weight:bold;">
                     ${p.branch || 'غير محدد'} 
                 </span>
             </td>
             <td>${p.date || '-'}</td>
+            <td style="max-width: 250px;">
+                <div style="display: flex; flex-wrap: wrap; gap: 2px;">
+                    ${testsBadges || '<span style="color:#999">لا يوجد</span>'}
+                </div>
+            </td>
             <td class="price-text" style="font-weight:bold; color:#0D9488;">
                 ${(p.totalAmount || 0).toLocaleString('ar-DZ')} دج
             </td>
             <td>
-                <button class="action-btn delete" onclick="deletePatient('${p.firebaseId}')">
+                <button class="action-btn delete" onclick="deletePatient('${p.firebaseId}')" style="border:none; background:none; color:#ef4444; cursor:pointer;">
                     <i class="fas fa-trash"></i>
                 </button>
             </td>
@@ -111,17 +102,15 @@ function renderPatientsTable() {
     });
 }
 
+// ============= 4. Helpers & Exports =============
 async function deletePatient(id) {
-    if (confirm('هل أنت متأكد من حذف هذا السجل نهائياً من السحابة؟')) {
+    if (confirm('هل أنت متأكد من حذف هذا السجل؟')) {
         try {
             await deleteDoc(doc(db, "patients", id));
-            showToast('تم الحذف بنجاح', 'success');
-            // تحديث القائمة محلياً دون إعادة تحميل الصفحة
             allPatients = allPatients.filter(p => p.firebaseId !== id);
             filterPatients();
-        } catch (error) {
-            showToast('فشل الحذف، حاول مجدداً', 'error');
-        }
+            showToast('تم الحذف بنجاح', 'success');
+        } catch (error) { showToast('خطأ في الحذف', 'error'); }
     }
 }
 
@@ -148,58 +137,52 @@ function updateStatistics() {
 
 function showToast(message, type = 'info') {
     const container = document.getElementById('toastContainer');
-    if (!container) return;
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.innerHTML = message;
-    container.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    if (container) {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
 }
 
-// ============= 4. PDF Export (Styled Cards) =============
+// التصدير للـ PDF بنفس التنسيق المصلح
 function exportToPDF() {
     if (filteredPatients.length === 0) return;
     const w = window.open('', '_blank');
     w.document.write(`
-        <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+        <html><head><title>RAED LAB - PDF</title>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap');
-            body { font-family: 'Tajawal', sans-serif; padding: 20px; direction: rtl; }
-            .header { text-align: center; border-bottom: 2px solid #0D9488; margin-bottom: 20px; padding-bottom: 10px; }
+            body { font-family: sans-serif; direction: rtl; padding: 20px; }
             table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #ddd; padding: 10px; text-align: right; font-size: 0.85rem; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: right; }
             th { background: #0D9488; color: white; }
-            .test-badge { display: inline-block; background: #F0FDFA; color: #0D9488; padding: 2px 6px; border-radius: 4px; margin: 2px; font-size: 0.7rem; border: 1px solid #CCFBF1; font-weight: bold; }
-            .total-row { background: #f9f9f9; font-weight: bold; color: #0D9488; }
+            .test-badge { background: #F0FDFA; color: #0D9488; padding: 2px 5px; border-radius: 4px; font-size: 0.7rem; border: 1px solid #CCFBF1; margin: 1px; display: inline-block; }
         </style></head><body>
-            <div class="header">
-                <h1>🔬 رائد لاب - قائمة المرضى والتحاليل</h1>
-                <p>إجمالي المرضى: ${filteredPatients.length} | المجموع: ${totalRevenueEl.textContent}</p>
-            </div>
+            <h2 style="text-align:center; color:#0D9488;">تقرير مرضى رائد لاب</h2>
             <table>
-                <thead><tr><th>#</th><th>اسم المريض</th><th>العمر</th><th>التحاليل المطلوبة</th><th>الفرع</th><th>المبلغ</th></tr></thead>
+                <thead><tr><th>#</th><th>المريض</th><th>العمر</th><th>الفرع</th><th>التاريخ</th><th>التحاليل</th><th>المبلغ</th></tr></thead>
                 <tbody>
                     ${filteredPatients.map((p, i) => `
                         <tr>
-                            <td>${i + 1}</td>
-                            <td style="font-weight:bold;">${p.name}</td>
-                            <td>${p.age || '-'} سنة</td>
-                            <td style="max-width:300px;">
-                                ${(p.tests || []).map(t => `<span class="test-badge">${t.shortName || t.name}</span>`).join('')}
-                            </td>
-                            <td>${p.branch || '-'}</td>
+                            <td>${i+1}</td>
+                            <td>${p.name}</td>
+                            <td>${p.age}</td>
+                            <td>${p.branch}</td>
+                            <td>${p.date}</td>
+                            <td>${(p.tests || []).map(t => `<span class="test-badge">${t.shortName || t.name}</span>`).join('')}</td>
                             <td>${(p.totalAmount || 0).toLocaleString('ar-DZ')} دج</td>
                         </tr>
                     `).join('')}
                 </tbody>
             </table>
-            <script>window.onload = () => { setTimeout(()=> window.print(), 500); }</script>
+            <script>window.onload = () => window.print();</script>
         </body></html>
     `);
     w.document.close();
 }
 
-// ============= 5. Global Bindings & Events =============
+// ============= 5. Event Listeners =============
 window.filterPatients = filterPatients;
 window.exportToPDF = exportToPDF;
 window.deletePatient = deletePatient;
