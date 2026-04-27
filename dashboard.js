@@ -1,28 +1,58 @@
 /* ============================================
-   RAED LAB DASHBOARD — Main Logic
+   RAED LAB DASHBOARD — Cloud Logic (Firestore)
    ============================================ */
+import { db, auth } from './firebase-config.js';
+import { collection, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
-// ============ Load patients from localStorage ============
-function loadAllPatients() {
-    try {
-        return JSON.parse(localStorage.getItem('raedlab_patients') || '[]');
-    } catch { return []; }
-}
+let allPatients = [];
 
 // ============ Today helpers ============
 function todayISO() {
     const d = new Date();
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
+    return d.toISOString().split('T')[0]; // صيغة YYYY-MM-DD
+}
+
+// ============ Authentication & Data Loading ============
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const adminEmail = "contact.raedlab@gmail.com"; 
+        const isAdmin = (user.email === adminEmail);
+        loadDashboardData(user.uid, isAdmin);
+    } else {
+        window.location.href = 'login.html';
+    }
+});
+
+async function loadDashboardData(uid, isAdmin) {
+    try {
+        let q;
+        if (isAdmin) {
+            // المدير يرى الكل للحصول على إحصائيات شاملة
+            q = query(collection(db, "patients"), orderBy("registeredAt", "desc"));
+        } else {
+            // الفرع يرى بياناته فقط
+            q = query(collection(db, "patients"), where("branchId", "==", uid), orderBy("registeredAt", "desc"));
+        }
+
+        const querySnapshot = await getDocs(q);
+        allPatients = [];
+        querySnapshot.forEach((doc) => {
+            allPatients.push({ firebaseId: doc.id, ...doc.data() });
+        });
+
+        updateKPIs();
+        updateRecentPanel();
+    } catch (error) {
+        console.error("Dashboard Load Error:", error);
+    }
 }
 
 // ============ Animate counter ============
 function animateNumber(el, target, suffix = '') {
     if (!el) return;
     const start = 0;
-    const duration = 600;
+    const duration = 800;
     const startTime = performance.now();
     const step = (now) => {
         const t = Math.min((now - startTime) / duration, 1);
@@ -34,136 +64,68 @@ function animateNumber(el, target, suffix = '') {
     requestAnimationFrame(step);
 }
 
-// ============ Update KPIs ============
+// ============ Update KPIs (Corrected for Firestore) ============
 function updateKPIs() {
-    const patients = loadAllPatients();
     const today = todayISO();
-    const todayPatients = patients.filter(p => p.date === today);
+    const todayPatients = allPatients.filter(p => p.date === today);
 
-    const totalPatientsCount = patients.length;
-    const totalTestsCount = patients.reduce((s, p) => s + (p.totalTests || 0), 0);
-    const totalRevenue = patients.reduce((s, p) => s + (p.totalAmount || 0), 0);
+    // حساب الإحصائيات الكلية
+    const totalPatientsCount = allPatients.length;
+    const totalTestsCount = allPatients.reduce((s, p) => s + (p.tests?.length || 0), 0);
+    const totalRevenue = allPatients.reduce((s, p) => s + (p.totalAmount || 0), 0);
 
+    // حساب إحصائيات اليوم
     const todayPatientsCount = todayPatients.length;
-    const todayTestsCount = todayPatients.reduce((s, p) => s + (p.totalTests || 0), 0);
+    const todayTestsCount = todayPatients.reduce((s, p) => s + (p.tests?.length || 0), 0);
     const todayRevenue = todayPatients.reduce((s, p) => s + (p.totalAmount || 0), 0);
 
-    // Today
-    animateNumber(document.getElementById('kpiTodayPatients'), todayPatientsCount);
-    animateNumber(document.getElementById('kpiTodayTests'), todayTestsCount);
-    animateNumber(document.getElementById('kpiTodayRevenue'), todayRevenue, ' دج');
-
-    // Total
+    // تحديث الأرقام في الواجهة
     animateNumber(document.getElementById('kpiTotalPatients'), totalPatientsCount);
-    animateNumber(document.getElementById('kpiTotalTests'), totalTestsCount);
     animateNumber(document.getElementById('kpiTotalRevenue'), totalRevenue, ' دج');
+    
+    // إذا كان لديك عناصر "اليوم" في الواجهة
+    const kpiToday = document.getElementById('kpiTodayPatients');
+    if(kpiToday) animateNumber(kpiToday, todayPatientsCount);
 
-    // Progress bars (relative to total of all time, capped)
+    // تحديث أشرطة التقدم (Progress bars)
     const setBar = (id, todayVal, totalVal) => {
         const bar = document.getElementById(id);
         if (!bar) return;
         const pct = totalVal > 0 ? Math.min(100, (todayVal / totalVal) * 100) : 0;
-        // tiny delay for animation
         setTimeout(() => { bar.style.width = pct.toFixed(1) + '%'; }, 100);
     };
     setBar('kpiTodayPatientsBar', todayPatientsCount, Math.max(totalPatientsCount, 1));
-    setBar('kpiTodayTestsBar', todayTestsCount, Math.max(totalTestsCount, 1));
-    setBar('kpiTodayRevenueBar', todayRevenue, Math.max(totalRevenue, 1));
 }
 
-// ============ Recent Activity ============
+// ============ Recent Activity (Firestore Version) ============
 function updateRecentPanel() {
     const panel = document.getElementById('recentPanel');
     if (!panel) return;
-    const patients = loadAllPatients()
-        .sort((a, b) => new Date(b.registeredAt || b.date) - new Date(a.registeredAt || a.date))
-        .slice(0, 5);
+    
+    const recent = allPatients.slice(0, 5); // أحدث 5 سجلات
 
-    if (patients.length === 0) {
-        panel.innerHTML = '<div class="portal-recent-empty"><i class="fas fa-inbox"></i><br><br>لا توجد سجلات بعد</div>';
+    if (recent.length === 0) {
+        panel.innerHTML = '<div style="text-align:center;padding:20px;color:#999;">لا توجد سجلات بعد</div>';
         return;
     }
 
-    panel.innerHTML = patients.map(p => {
-        const initial = (p.name || '?').trim()[0] || '?';
-        const tag = p.totalTests >= 5 ? 'urgent' : 'success';
-        const tagText = p.totalTests >= 5 ? 'متعدد' : 'جديد';
+    panel.innerHTML = recent.map(p => {
+        const initial = (p.name || '?')[0];
+        const testsCount = p.tests?.length || 0;
         return `
-            <a href="patients-list.html" class="portal-recent-item" style="text-decoration:none;color:inherit;">
-                <div class="portal-recent-icon">${pEscapeHtml(initial)}</div>
-                <div class="portal-recent-info">
-                    <h4>${pEscapeHtml(p.name)}</h4>
-                    <p>${p.totalTests} تحليل · ${(p.totalAmount||0).toLocaleString('ar-DZ')} دج · ${pEscapeHtml(p.date || '')}</p>
+            <div class="portal-recent-item" style="display:flex;align-items:center;gap:15px;padding:12px;border-bottom:1px solid #eee;">
+                <div style="width:40px;height:40px;background:#0D9488;color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;">
+                    ${initial}
                 </div>
-                <span class="portal-recent-tag ${tag}">${tagText}</span>
-            </a>
+                <div style="flex:1;">
+                    <h4 style="margin:0;font-size:0.9rem;">${p.name}</h4>
+                    <p style="margin:0;font-size:0.75rem;color:#666;">${p.branch} · ${testsCount} تحليل</p>
+                </div>
+                <div style="text-align:left;">
+                    <span style="display:block;font-weight:bold;color:#0D9488;font-size:0.85rem;">${(p.totalAmount||0).toLocaleString('ar-DZ')} دج</span>
+                    <span style="font-size:0.7rem;color:#999;">${p.date}</span>
+                </div>
+            </div>
         `;
     }).join('');
 }
-
-// ============ Global Search with Autocomplete ============
-function initGlobalSearch() {
-    const input = document.getElementById('globalSearch');
-    if (!input) return;
-
-    createAutocomplete(input, {
-        data: () => {
-            // Combine tests + patients for global search
-            const tests = (typeof medicalTests !== 'undefined' ? medicalTests : []).map(t => ({
-                kind: 'test',
-                ...t
-            }));
-            const patients = loadAllPatients().map(p => ({
-                kind: 'patient',
-                ...p
-            }));
-            return [...patients, ...tests];
-        },
-        keys: ['name', 'shortName', 'phone'],
-        maxResults: 10,
-        emptyMsg: 'لا توجد نتائج',
-        groupBy: (item) => item.kind === 'patient' ? '👤 المرضى' : '🧪 التحاليل',
-        render: (item, term) => {
-            if (item.kind === 'patient') {
-                return `
-                    <div class="autocomplete-item-icon" style="background:#FEF3C7;color:#B45309;"><i class="fas fa-user"></i></div>
-                    <div class="autocomplete-item-content">
-                        <span class="autocomplete-item-title">${pHighlight(item.name, term)}</span>
-                        <span class="autocomplete-item-subtitle">${pHighlight(item.phone || '', term)} · ${pEscapeHtml(item.branch || '')}</span>
-                    </div>
-                    <span class="autocomplete-item-badge" style="background:#FEF3C7;color:#B45309;border-color:#FCD34D;">${item.totalTests || 0} تحليل</span>
-                `;
-            }
-            return `
-                <div class="autocomplete-item-icon"><i class="fas fa-flask"></i></div>
-                <div class="autocomplete-item-content">
-                    <span class="autocomplete-item-title">${pHighlight(item.name, term)}</span>
-                    <span class="autocomplete-item-subtitle">${pEscapeHtml(item.tube || '')} · ${(item.price||0).toLocaleString('ar-DZ')} دج</span>
-                </div>
-                <span class="autocomplete-item-badge">${pHighlight(item.shortName || '', term)}</span>
-            `;
-        },
-        onSelect: (item) => {
-            if (item.kind === 'patient') {
-                window.location.href = 'patients-list.html';
-            } else {
-                // Save selected test to cart and go to catalog
-                try {
-                    const cart = JSON.parse(localStorage.getItem('raedlab_cart') || '[]');
-                    if (!cart.some(t => t.id === item.id)) {
-                        cart.push(item);
-                        localStorage.setItem('raedlab_cart', JSON.stringify(cart));
-                    }
-                } catch {}
-                window.location.href = 'tests-catalog.html';
-            }
-        }
-    });
-}
-
-// ============ Init ============
-document.addEventListener('DOMContentLoaded', () => {
-    updateKPIs();
-    updateRecentPanel();
-    initGlobalSearch();
-});
