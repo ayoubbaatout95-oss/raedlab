@@ -1,6 +1,8 @@
 // RAED LAB - Firebase Configuration
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDSHLkEehR9yDRcZhIuQ7_mr9KxJmmqdnY",
@@ -14,6 +16,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-// التصدير الصحيح لقاعدة البيانات لتعمل في صفحة التسجيل
-export const db = getFirestore(app);
+// تعريف الأدوات مرة واحدة فقط
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// التصدير الجماعي - هذا هو الأسلوب الأفضل والأضمن
+export { db, auth, analytics };
